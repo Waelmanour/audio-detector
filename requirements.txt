@@ -1,0 +1,17 @@
+numpy>=1.19.2
+torch>=1.7.0
+torchvision>=0.8.1
+torchaudio>=0.7.0
+librosa>=0.8.0
+pandas>=1.1.4
+scikit-learn>=0.23.2
+matplotlib>=3.3.2
+seaborn>=0.11.0
+shap>=0.39.0
+tqdm>=4.50.2
+soundfile>=0.10.3.post1
+wavefile>=1.5
+pyAudioAnalysis>=0.3.14
+IPython>=7.19.0
+jupyter>=1.0.0
+notebook>=6.1.5
