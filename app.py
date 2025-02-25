@@ -7,6 +7,10 @@ from model import AudioClassifier
 from preprocess import AudioFeatureExtractor
 import shap
 import os
+import sys
+
+# Add the current directory to Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Set page config
 st.set_page_config(
@@ -22,15 +26,19 @@ def load_model():
     feature_extractor = AudioFeatureExtractor()
     
     try:
-        checkpoint = torch.load('audio_classifier.pth', map_location=device)
-        classifier.model.load_state_dict(checkpoint['model_state_dict'])
-        print(f"Model loaded successfully with accuracy: {checkpoint['accuracy']:.2f}%")
-        classifier.model.eval()
+        if os.path.exists('audio_classifier.pth'):
+            checkpoint = torch.load('audio_classifier.pth', map_location=device)
+            classifier.model.load_state_dict(checkpoint['model_state_dict'])
+            print(f"Model loaded successfully with accuracy: {checkpoint['accuracy']:.2f}%")
+            classifier.model.eval()
+        else:
+            from main import train_model
+            print("Training new model since no existing model found")
+            dataset_dir = 'dataset'
+            classifier, feature_extractor = train_model(dataset_dir, batch_size=32, epochs=5)
     except Exception as e:
-        print(f"Training new model since existing model not found: {str(e)}")
-        from main import train_model
-        dataset_dir = 'dataset'
-        classifier, feature_extractor = train_model(dataset_dir, batch_size=32, epochs=5)
+        print(f"Error loading/training model: {str(e)}")
+        return None, None
     
     return classifier, feature_extractor
 
