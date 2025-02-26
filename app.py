@@ -1,19 +1,30 @@
-import streamlit as st
-import torch
-import librosa
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 import sys
 from pathlib import Path
 
-# Add the current directory to Python path
+# Add the current directory to Python path before any other imports
 sys.path.append(str(Path(__file__).parent.absolute()))
 
-# Import local modules after path setup
+# Initialize PyTorch and CUDA before importing other modules
+os.environ['PYTORCH_JIT'] = '0'
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+
+# Import required packages
+import streamlit as st
+import torch
+import torch.backends.cudnn as cudnn
+import librosa
+import numpy as np
+import matplotlib.pyplot as plt
+import shap
+
+# Import local modules after environment setup
 from model import AudioClassifier
 from preprocess import AudioFeatureExtractor
-import shap
+
+# Configure PyTorch settings
+torch.backends.cudnn.benchmark = True
+torch.backends.cudnn.deterministic = True
 
 # Set page config
 st.set_page_config(
