@@ -7,11 +7,16 @@ sys.path.append(str(Path(__file__).parent.absolute()))
 
 # Initialize asyncio event loop
 import asyncio
-try:
-    loop = asyncio.get_event_loop()
-except RuntimeError:
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+
+def init_event_loop():
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+# Initialize the event loop before importing torch
+init_event_loop()
 
 # Initialize PyTorch and CUDA before importing other modules
 os.environ['PYTORCH_JIT'] = '0'
