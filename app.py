@@ -5,6 +5,14 @@ from pathlib import Path
 # Add the current directory to Python path before any other imports
 sys.path.append(str(Path(__file__).parent.absolute()))
 
+# Initialize asyncio event loop
+import asyncio
+try:
+    loop = asyncio.get_event_loop()
+except RuntimeError:
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
 # Initialize PyTorch and CUDA before importing other modules
 os.environ['PYTORCH_JIT'] = '0'
 os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
@@ -21,6 +29,10 @@ import shap
 # Import local modules after environment setup
 from model import AudioClassifier
 from preprocess import AudioFeatureExtractor
+
+# Configure PyTorch settings
+torch.backends.cudnn.benchmark = True
+torch.backends.cudnn.deterministic = True
 
 # Configure PyTorch settings
 torch.backends.cudnn.benchmark = True
