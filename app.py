@@ -3,14 +3,17 @@ import torch
 import librosa
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+import sys
+from pathlib import Path
+
+# Add the current directory to Python path
+sys.path.append(str(Path(__file__).parent.absolute()))
+
+# Import local modules after path setup
 from model import AudioClassifier
 from preprocess import AudioFeatureExtractor
 import shap
-import os
-import sys
-
-# Add the current directory to Python path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Set page config
 st.set_page_config(
